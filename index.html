@@ -527,6 +527,17 @@
             margin-bottom: 15px;
             font-size: 1.1em;
         }
+
+        /*财务分析*/
+        /* 左对齐列表专用样式 */
+        .list-left {
+            text-align: left;
+            padding-left: 20px; /* 保留适当左内边距，增强可读性 */
+            margin-bottom: 20px; /* 与其他元素保持间距 */
+        }
+        .list-left li {
+            margin-bottom: 8px; /* 列表项之间增加间距，提升美观度 */
+        }
         
         /* 效益卡片样式 */
         .benefit {
@@ -998,7 +1009,7 @@
         
         <!-- 价值观展示 -->
         <div class="benefit" style="margin-bottom: 2rem; background-color: #f0f7ff; border-left: 4px solid #ffd700;">
-            <h3>我们的价值观</h3>
+            <h3>项目核心价值观</h3>
             <div class="feature" style="margin-bottom: 0.5rem;">
                 <div class="feature-icon"><i class="fas fa-seedling"></i></div>
                 <p><strong>品质为根：</strong>坚守天然原料，传承发酵匠心，严控每一口健康风味</p>
@@ -1066,7 +1077,7 @@
             <div class="team-member">
                 <div class="team-member-info">
                     <h3>曹宇欣 - 人力资源管理</h3>
-                    <p><strong>专业:</strong> 马克思主义学院思想政治教育</p>
+                    <p><strong>专业:</strong> 思想政治教育</p>
                     <p><strong>经验:</strong> 1年大学生职业生涯规划竞赛经验（曾获成长赛道院级二等奖），现担任马克思主义学院院学生会学习生活部副部长与河南大学当代中国马克思主义研究会学研部部长。</p>
                     <p><strong>职责:</strong> 统筹团队人力资源规划，负责人员协调与管理工作。</p>
                 </div>
@@ -1075,7 +1086,7 @@
             <div class="team-member">
                 <div class="team-member-info">
                     <h3>王浩然 - 物流管理</h3>
-                    <p><strong>专业:</strong> 马克思主义学院思想政治教育</p>
+                    <p><strong>专业:</strong> 思想政治教育</p>
                     <p><strong>经验:</strong> 两年参与大学生创新创业经验，两次暑期“三下乡”社会实践经历，现任河南大学当代中国马克思主义研究会会长。</p>
                     <p><strong>职责:</strong> 负责物流策略规划、资源整合及团队协作机制建立。</p>
                 </div>
@@ -1084,7 +1095,7 @@
             <div class="team-member">
                 <div class="team-member-info">
                     <h3>肖伊雯 - 产品安全管理</h3>
-                    <p><strong>专业:</strong> 药学院中药专业</p>
+                    <p><strong>专业:</strong> 中药</p>
                     <p><strong>经验:</strong> 1年大学生挑战杯系列竞赛经验（曾获挑战杯校级三等奖），参与药学开放性课题项目，现担任中药班班长与学院主持队队长。</p>
                     <p><strong>职责:</strong> 负责农产品全环节安全管理，收集整理安全数据。</p>
                 </div>
@@ -1093,7 +1104,7 @@
             <div class="team-member">
                 <div class="team-member-info">
                     <h3>高峰娟 - 售后服务与顾客维护</h3>
-                    <p><strong>专业:</strong> 马克思主义学院思想政治教育</p>
+                    <p><strong>专业:</strong> 思想政治教育</p>
                     <p><strong>经验:</strong> 参与"挑战杯"全国大学生课外学术科技作品竞赛，有暑期乡村振兴项目参与经历。</p>
                     <p><strong>职责:</strong> 负责客户关系维护、需求调研及售后服务优化。</p>
                 </div>
@@ -1110,7 +1121,7 @@
                 
                 <div class="content-container">
                     <h3>资金来源与运用</h3>
-                    <ul>
+                    <ul class="list-left">
                         <li><strong>政府涉农专项补贴:</strong> 重点申请"农产品产地初加工补贴"，适配中期标准化升级需求。</li>
                         <li><strong>合作社联合自筹:</strong> 由红薯种植合作社与本地粉条企业共同出资，绑定产业链核心资源。</li>
                         <li><strong>农户小额入股:</strong> 支持种植户以1000元现金或地瓜秧折抵入股，增强利益联结。</li>
@@ -1162,7 +1173,7 @@
                     </table>
                     
                     <h3>关键财务指标</h3>
-                    <ul>
+                    <ul class="list-left">
                         <li><strong>投资回收期:</strong> 预估2年，较农产品加工行业平均周期缩短1-2年。</li>
                         <li><strong>毛利率:</strong> 第1年30%，第2年40%，第3年42%，逐年提升。</li>
                         <li><strong>资产负债率:</strong> 第1年30%，第2年18%，第3年10%，偿债能力充足。</li>
