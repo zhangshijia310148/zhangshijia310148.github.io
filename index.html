@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="zh-CN">
 
@@ -10,544 +9,669 @@
     <style>
         /* 全局样式 */
         :root {
-            --primary-color: #3498db;
-            --secondary-color: #2c3e50;
-            --accent-color: #e74c3c;
-            --light-color: #ecf0f1;
-            --dark-color: #2c3e50;
-            --success-color: #27ae60;
+            --primary-color: #ffd700;
+            --secondary-color: #8B4513;
+            --dark-color: #333;
+            --light-color: #f9f9f9;
+            --max-width: 1400px;
         }
-
-        body {
-            font-family: 'Microsoft YaHei', sans-serif;
+        
+        * {
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
+            font-family: "微软雅黑", "PingFang SC", sans-serif;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        body {
             line-height: 1.6;
-            color: #333;
-            background-color: #f9f9f9;
-            padding-top: 70px; /* 为固定导航栏留出空间 */
+            color: var(--dark-color);
+            background-color: var(--light-color);
+            padding-top: 70px;
         }
-
-        /* 头部样式 */
-        header {
-            background: linear-gradient(135deg, #6B73FF 0%, #000DFF 100%);
-            color: white;
-            padding: 2rem 0;
-            text-align: center;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        /* 固定导航栏样式 */
-        nav {
-            background-color: var(--secondary-color);
-            padding: 1rem 0;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            z-index: 1000;
-            transition: all 0.3s ease;
-        }
-
-        nav.scrolled {
-            background-color: rgba(44, 62, 80, 0.95);
-            padding: 0.5rem 0;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-        }
-
-        .nav-container {
-            max-width: 1200px;
+        
+        .container {
+            max-width: var(--max-width);
             margin: 0 auto;
-            padding: 0 2rem;
+            padding: 0 20px;
+            width: 100%;
+        }
+        
+        /* 导航栏 */
+        .navbar {
+            padding: 15px 50px;
+            background: rgba(30, 30, 30, 0.9);
+            color: white;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            transition: all 0.3s ease;
         }
-
+        
+        .navbar.scrolled {
+            padding: 10px 50px;
+            background: rgba(30, 30, 30, 0.95);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+        
+        .logo {
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+        
         .nav-links {
-            list-style: none;
-            padding: 0;
-            margin: 0;
             display: flex;
+            list-style: none;
+            transition: all 0.3s ease;
         }
-
+        
         .nav-links li {
-            margin: 0 1rem;
+            margin-left: 30px;
         }
-
-        .nav-links li a {
+        
+        .nav-links a {
             color: white;
             text-decoration: none;
-            font-weight: bold;
+            font-size: 1.1em;
             transition: color 0.3s;
             position: relative;
         }
-
-        .nav-links li a:hover {
+        
+        .nav-links a:hover {
             color: var(--primary-color);
         }
-
-        .nav-links li a::after {
+        
+        .nav-links a::after {
             content: '';
             position: absolute;
             width: 0;
             height: 2px;
+            background: var(--primary-color);
             bottom: -5px;
             left: 0;
-            background-color: var(--primary-color);
             transition: width 0.3s;
         }
-
-        .nav-links li a:hover::after {
+        
+        .nav-links a:hover::after {
             width: 100%;
         }
-
-
-        .example-code {
-        font-size: 0.9em;
-        color: #666;
-        margin-bottom: 1.5rem;
-    }
-    
-    .trace-steps {
-        margin-top: 2rem;
-    }
-    
-    .step {
-        display: flex;
-        align-items: flex-start;
-        margin-bottom: 1.5rem;
-        padding: 1rem;
-        background-color: #f8f9fa;
-        border-radius: 8px;
-        transition: all 0.3s ease;
-    }
-    
-    .step:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-    }
-    
-    .step-icon {
-        margin-right: 1.5rem;
-        font-size: 2rem;
-        color: var(--primary-color);
-        min-width: 50px;
-        text-align: center;
-    }
-    
-    .step-content h4 {
-        margin-top: 0;
-        color: var(--secondary-color);
-    }
-
-
-        /* 移动端菜单按钮 */
-        .menu-toggle {
+        
+        /* 汉堡菜单 */
+        .hamburger {
             display: none;
             cursor: pointer;
+            font-size: 1.5em;
             color: white;
-            font-size: 1.5rem;
         }
-
-        /* 主要内容区样式 */
-        main {
-            max-width: 1200px;
-            margin: 2rem auto;
-            padding: 0 2rem;
+        
+        /* 移动端菜单 */
+        @media (max-width: 1160px) {
+            .hamburger {
+                display: block;
+            }
+            
+            .nav-links {
+                position: fixed;
+                top: 70px;
+                left: -100%;
+                width: 100%;
+                height: calc(100vh - 70px);
+                background: rgba(30, 30, 30, 0.95);
+                flex-direction: column;
+                align-items: center;
+                padding: 2rem 0;
+                opacity: 0;
+                transition: all 0.5s ease;
+            }
+            
+            .nav-links.active {
+                left: 0;
+                opacity: 1;
+            }
+            
+            .nav-links li {
+                margin: 1.5rem 0;
+            }
+            
+            .nav-links a {
+                font-size: 1.2em;
+            }
         }
-
-        /* 各部分样式 */
-        section {
-            background-color: white;
-            padding: 2rem;
-            margin-bottom: 2rem;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        
+        /* 头部样式 */
+        header {
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), 
+                        url('https://via.placeholder.com/1920x1080?text=乡村田园风光') center/cover;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: white;
+            padding-top: 70px;
         }
-
-        section:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        
+        header h1 {
+            font-size: clamp(2.5rem, 5vw, 3.5rem);
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
         }
-
+        
+        header p {
+            font-size: clamp(1.2rem, 2.5vw, 1.5rem);
+            margin-bottom: 10px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        }
+        
+        /* 按钮样式 */
+        .cta-btn {
+            display: inline-block;
+            padding: 15px 30px;
+            font-size: 1.2em;
+            background: var(--primary-color);
+            color: #333;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .cta-btn:hover {
+            background: #e6c200;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+        }
+        
+        /* 通用区块样式 */
+        .section {
+            padding: 80px 20px;
+            text-align: center;
+        }
+        
+        .section h2 {
+            font-size: clamp(2rem, 4vw, 2.5rem);
+            margin-bottom: 50px;
+            color: var(--dark-color);
+            position: relative;
+            display: inline-block;
+        }
+        
+        .section h2::after {
+            content: '';
+            position: absolute;
+            width: 50%;
+            height: 3px;
+            background: var(--primary-color);
+            bottom: -15px;
+            left: 25%;
+        }
+        
+        .section > p {
+            font-size: 1.1em;
+            max-width: 800px;
+            margin: 0 auto 30px;
+        }
+        
         /* 折叠面板样式 */
         .accordion {
-            margin-bottom: 1rem;
+            margin-bottom: 20px;
+            text-align: left;
+            max-width: 1000px;
+            margin-left: auto;
+            margin-right: auto;
         }
-
+        
         .accordion-header {
-            background-color: var(--primary-color);
-            color: white;
-            padding: 1rem;
-            border-radius: 4px;
+            background-color: white;
+            color: var(--dark-color);
+            padding: 20px;
+            border-radius: 8px;
             cursor: pointer;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            transition: background-color 0.3s;
+            transition: all 0.3s;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 10px;
+            font-size: 1.2em;
+            font-weight: bold;
+            border-left: 4px solid var(--primary-color);
         }
-
+        
         .accordion-header:hover {
-            background-color: #2980b9;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
         }
-
+        
         .accordion-header.active {
-            background-color: var(--secondary-color);
-            border-radius: 4px 4px 0 0;
+            background-color: #f8f9fa;
         }
-
+        
         .accordion-content {
             padding: 0;
             max-height: 0;
             overflow: hidden;
             transition: max-height 0.3s ease, padding 0.3s ease;
-            background-color: #f8f9fa;
-            border-radius: 0 0 4px 4px;
-        }
-
-        .accordion-content.active {
-            padding: 1rem;
-            max-height: 1000px;
-            border: 1px solid #eee;
-            border-top: none;
-        }
-
-        /* 溯源查询表单样式 */
-        #traceForm {
-            display: flex;
-            flex-direction: column;
-            max-width: 500px;
-            margin: 0 auto;
-        }
-
-        #traceForm label {
-            margin-bottom: 0.5rem;
-            font-weight: bold;
-        }
-
-        #traceForm input[type="text"] {
-            padding: 0.8rem;
-            margin-bottom: 1rem;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 1rem;
-            transition: border-color 0.3s;
-        }
-
-        #traceForm input[type="text"]:focus {
-            border-color: var(--primary-color);
-            outline: none;
-            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
-        }
-
-        #traceForm button {
-            background-color: var(--primary-color);
-            color: white;
-            border: none;
-            padding: 0.8rem;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 1rem;
-            transition: background-color 0.3s, transform 0.2s;
-        }
-
-        #traceForm button:hover {
-            background-color: #2980b9;
-            transform: translateY(-2px);
-        }
-
-        #traceForm button:active {
-            transform: translateY(0);
-        }
-
-        /* 查询结果样式 */
-        #result {
-            display: none;
-            margin-top: 2rem;
-            padding: 1.5rem;
-            background-color: #f8f9fa;
-            border-radius: 4px;
-            border-left: 4px solid var(--primary-color);
-            animation: fadeIn 0.5s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* 页脚样式 */
-        footer {
-            background-color: var(--secondary-color);
-            color: white;
-            text-align: center;
-            padding: 1.5rem 0;
-        }
-
-        /* 响应式设计 */
-        @media (max-width: 1040px) {
-            .menu-toggle {
-                display: block;
-                z-index: 1001;
-            }
-
-            .step {
-                flex-direction: column;
-                align-items: center;
-                text-align: center;
-            }
-        
-            .step-icon {
-                margin-right: 0;
-                margin-bottom: 1rem;
-            }
-
-            .nav-links {
-                position: fixed;
-                top: 100px;
-                left: -100%;
-                width: 80%;
-                max-width: 300px;
-                height: calc(100vh - 70px);
-                background-color: var(--secondary-color);
-                flex-direction: column;
-                align-items: flex-start;
-                padding: 2rem 0;
-                transition: left 0.3s ease;
-                box-shadow: 2px 0 10px rgba(0, 0, 0, 0.2);
-                overflow-y: auto;
-            }
-
-            .nav-links.active {
-                left: 0;
-            }
-
-            .nav-links li {
-                margin: 1rem 0;
-                width: 100%;
-            }
-
-
-            
-        .nav-links li a {
-            display: block;
-            padding: 1rem 2rem;
-            width: 100%;
-            box-sizing: border-box;
-        }
-
-        .nav-links li a:hover {
-            background-color: rgba(255, 255, 255, 0.1);
-        }
-
-        .nav-links li a::after {
-            display: none;
-
-            main {
-                padding: 0 1rem;
-            }
-
-            .product-card {
-                width: 100%;
-                color: rgba(217, 167, 167, 0.867);
-            }
-        }
-
-        /* 项目特色样式 */
-        .feature {
-            display: flex;
-            align-items: center;
-            margin-bottom: 1.5rem;
-        }
-
-        .feature-icon {
-            font-size: 2rem;
-            margin-right: 1.5rem;
-            color: var(--primary-color);
-        }
-
-        /* 产品展示样式 */
-        .product-display {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-around;
-            gap: 2rem;
-        }
-
-        .product-card {
             background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-            overflow: hidden;
-            width: 30%;
-            min-width: 250px;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border-radius: 0 0 8px 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            text-align: left;
+            border-left: 4px solid var(--primary-color);
         }
-
+        
+        .accordion-content.active {
+            padding: 20px;
+            max-height: 1000px;
+            margin-bottom: 10px;
+        }
+        
+        /* 产品卡片样式 */
+        .product-display {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .product-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            text-align: left;
+        }
+        
         .product-card:hover {
             transform: translateY(-10px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
         }
-
+        
         .product-image {
             width: 100%;
-            height: 200px;
+            height: 250px;
             object-fit: cover;
-            transition: transform 0.3s ease;
+            border-bottom: 3px solid var(--primary-color);
         }
-
-        .product-card:hover .product-image {
-            transform: scale(1.05);
-        }
-
+        
         .product-info {
-            padding: 1.5rem;
+            padding: 20px;
         }
-
+        
         .product-info h3 {
-            margin-top: 0;
+            margin: 0 0 15px;
+            color: var(--dark-color);
+            font-size: 1.3em;
+        }
+        
+        .product-ad {
             color: var(--secondary-color);
+            font-weight: bold;
+            margin-bottom: 10px;
+            font-size: 0.95em;
         }
-
-        /* 政策支持样式 */
-        .policy-card {
-            background-color: white;
-            padding: 1.5rem;
-            margin-bottom: 1rem;
-            border-radius: 4px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-            border-left: 4px solid var(--success-color);
-            transition: transform 0.3s ease;
+        
+        .product-info p {
+            margin-bottom: 10px;
+            color: #666;
+            font-size: 0.95em;
         }
-
-        .policy-card:hover {
-            transform: translateX(5px);
-        }
-
-        /* 技术保障样式 */
+        
+        /* 技术保障卡片样式 */
         .tech-保障 {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-around;
-            gap: 1.5rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
         }
-
+        
         .tech-card {
-            background-color: white;
-            padding: 1.5rem;
-            margin-bottom: 1.5rem;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-            width: 45%;
-            min-width: 280px;
-            transition: all 0.3s ease;
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            border-top: 3px solid var(--primary-color);
         }
-
+        
         .tech-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            transform: translateY(-8px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
         }
-
-        /* 团队介绍样式 */
+        
+        .tech-card h3 {
+            color: var(--dark-color);
+            margin-top: 0;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .tech-card h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 2px;
+            background: var(--primary-color);
+        }
+        
+        .tech-card p {
+            color: #666;
+            font-size: 0.95em;
+        }
+        
+        /* 团队成员卡片样式 */
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
         .team-member {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
             display: flex;
             align-items: center;
-            margin-bottom: 1.5rem;
-            padding: 1rem;
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-            transition: all 0.3s ease;
+            text-align: left;
         }
-
+        
         .team-member:hover {
-            transform: translateX(5px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
         }
-
+        
         .team-member-image {
             width: 80px;
             height: 80px;
             border-radius: 50%;
             object-fit: cover;
-            margin-right: 1.5rem;
+            margin-right: 20px;
             border: 3px solid var(--primary-color);
-            transition: transform 0.3s ease;
         }
-
-        .team-member:hover .team-member-image {
-            transform: scale(1.1);
-        }
-
+        
         .team-member-info h3 {
-            margin-top: 0;
-            color: var(--secondary-color);
+            margin: 0 0 10px;
+            color: var(--dark-color);
         }
-
+        
         .team-member-info p {
-            margin-bottom: 0.5rem;
+            margin-bottom: 5px;
+            color: #666;
+            font-size: 0.95em;
         }
-
-        /* 财务分析表格样式 */
+        
+        /* 溯源步骤样式 */
+        .trace-steps {
+            margin-top: 30px;
+            max-width: 1000px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .step {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            display: flex;
+            align-items: center;
+            text-align: left;
+        }
+        
+        .step:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+        
+        .step-icon {
+            margin-right: 20px;
+            font-size: 2rem;
+            color: var(--secondary-color);
+            width: 60px;
+            text-align: center;
+        }
+        
+        .step-content h4 {
+            margin: 0 0 10px;
+            color: var(--dark-color);
+        }
+        
+        .step-content p {
+            color: #666;
+            font-size: 0.95em;
+        }
+        
+        /* 表格样式 */
         .financial-table {
             width: 100%;
             border-collapse: collapse;
-            margin-bottom: 2rem;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            margin: 20px 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
             overflow: hidden;
-            border-radius: 8px;
         }
-
+        
         .financial-table th,
         .financial-table td {
             border: 1px solid #ddd;
-            padding: 0.8rem;
+            padding: 12px;
             text-align: left;
         }
-
+        
         .financial-table th {
-            background-color: var(--primary-color);
+            background-color: var(--secondary-color);
             color: white;
             font-weight: bold;
         }
-
+        
         .financial-table tr:nth-child(even) {
-            background-color: #f9f9f9;
+            background-color: #f8f9fa;
         }
-
+        
         .financial-table tr:hover {
             background-color: #f1f1f1;
         }
-
-        /* 社会效益样式 */
-        .benefit {
-            margin-bottom: 1.5rem;
-            padding: 1.5rem;
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-            transition: all 0.3s ease;
+        
+        /* 政策支持卡片样式 */
+        .policy-card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            border-left: 4px solid #27ae60;
+            text-align: left;
         }
-
+        
+        .policy-card:hover {
+            transform: translateX(5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+        
+        .policy-card h3 {
+            color: var(--dark-color);
+            margin-top: 0;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+        }
+        
+        /* 效益卡片样式 */
+        .benefit {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            text-align: left;
+        }
+        
         .benefit:hover {
             transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
         }
-
+        
         .benefit h3 {
-            color: var(--success-color);
+            color: #27ae60;
             margin-top: 0;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+            position: relative;
+            padding-bottom: 10px;
         }
-
+        
+        .benefit h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 2px;
+            background: #27ae60;
+        }
+        
+        .benefit p {
+            color: #666;
+            font-size: 0.95em;
+        }
+        
+        /* 表单样式 */
+        #traceForm {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            margin: 30px auto 0;
+            text-align: left;
+        }
+        
+        #traceForm label {
+            display: block;
+            margin: 1rem 0 0.5rem;
+            font-weight: bold;
+            color: var(--dark-color);
+        }
+        
+        #traceForm input[type="text"] {
+            width: 100%;
+            padding: 0.75rem;
+            margin-bottom: 1.5rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+        
+        #traceForm input[type="text"]:focus {
+            border-color: var(--primary-color);
+            outline: none;
+        }
+        
+        #traceForm button {
+            background: var(--secondary-color);
+            color: #fff;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            cursor: pointer;
+            border-radius: 4px;
+            font-size: 1rem;
+            transition: all 0.3s;
+            width: 100%;
+            font-weight: bold;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        #traceForm button:hover {
+            background: #6A3805;
+            transform: translateY(-2px);
+        }
+        
+        .loader {
+            display: none;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top: 3px solid white;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        #result {
+            display: none;
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            text-align: left;
+            animation: fadeIn 0.5s ease;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* 页脚样式 */
+        footer {
+            background-color: var(--dark-color);
+            color: white;
+            text-align: center;
+            padding: 30px;
+            font-size: 0.9em;
+        }
+        
         /* 返回顶部按钮 */
         .back-to-top {
             position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background-color: var(--primary-color);
-            color: white;
+            bottom: 30px;
+            right: 30px;
+            background: var(--primary-color);
+            color: var(--dark-color);
             width: 50px;
             height: 50px;
             border-radius: 50%;
@@ -557,71 +681,84 @@
             cursor: pointer;
             opacity: 0;
             visibility: hidden;
-            transition: all 0.3s ease;
+            transition: all 0.3s;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
             z-index: 999;
         }
-
-        .back-to-top:hover {
-            background-color: #2980b9;
-            transform: translateY(-3px);
-        }
-
+        
         .back-to-top.active {
             opacity: 1;
             visibility: visible;
         }
-
-        /* 加载动画 */
-        .loader {
-            border: 4px solid rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            border-top: 4px solid var(--primary-color);
-            width: 30px;
-            height: 30px;
-            animation: spin 1s linear infinite;
-            margin: 0 auto;
-            display: none;
+        
+        .back-to-top:hover {
+            background: #e6c200;
+            transform: translateY(-3px);
         }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        /* 响应式调整 - 窗口大小变化时重新计算 */
-        @media screen and (max-width: 1200px) {
-            .product-card {
-                width: 45%;
-            }
-        }
-
-        @media screen and (max-width: 768px) {
-            .product-card {
-                width: 100%;
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 15px 20px;
             }
             
-            .tech-card {
-                width: 100%;
+            .navbar.scrolled {
+                padding: 10px 20px;
+            }
+            
+            .section {
+                padding: 60px 15px;
+            }
+            
+            .team-member {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .team-member-image {
+                margin-right: 0;
+                margin-bottom: 15px;
+            }
+            
+            .step {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .step-icon {
+                margin-right: 0;
+                margin-bottom: 15px;
+            }
+            
+            #traceForm {
+                padding: 20px;
             }
         }
-    }
+        
+        /* 示例代码样式 */
+        .example-code {
+            margin: 15px 0;
+            padding: 10px;
+            background: #f0f0f0;
+            border-radius: 4px;
+            display: inline-block;
+        }
+
+        /* 内容容器统一样式 */
+        .content-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
     </style>
 </head>
 
 <body>
-    <!-- 头部 -->
-    <header>
-        <h1>乡珍新味</h1>
-        <p>点"秧"成金，奔赴富农新征程</p>
-        <p>产品溯源与信息公开系统</p>
-    </header>
-
     <!-- 导航栏 -->
-    <nav id="mainNav">
-        <div class="nav-container">
+    <nav class="navbar" id="mainNav">
+        <div class="container" style="display: flex; justify-content: space-between; align-items: center;">
             <div class="logo">乡珍新味</div>
-            <div class="menu-toggle" id="mobileMenu">
+            <div class="hamburger" id="mobileMenu">
                 <i class="fas fa-bars"></i>
             </div>
             <ul class="nav-links" id="navLinks">
@@ -638,232 +775,250 @@
         </div>
     </nav>
 
+    <!-- 头部 -->
+    <header>
+        <div class="container">
+            <h1>乡珍新味</h1>
+            <p>点"秧"成金，奔赴富农新征程</p>
+            <p>产品溯源与信息公开系统</p>
+            <a href="#search" class="cta-btn">立即查询</a>
+        </div>
+    </header>
+
     <!-- 主要内容区 -->
     <main>
         <!-- 产品溯源查询部分 -->
-<section id="search">
-    <h2>产品溯源查询</h2>
-    <p>输入产品溯源码或扫描包装上的二维码，即可查询产品从田间到舌尖的全过程信息，让每一口都吃得安心、吃得放心。</p>
-    <p class="example-code">示例溯源码: <strong>XZWY-2025-0001</strong></p>
-    
-    <form id="traceForm">
-        <label for="productId">产品溯源码:</label>
-        <input type="text" id="productId" name="productId" placeholder="例如: XZWY-2025-0001" required pattern="[A-Z]{4}-[0-9]{4}-[0-9]{4}">
-        <button type="submit" id="submitBtn">
-            <span id="btnText">立即查询</span>
-            <div class="loader" id="loader"></div>
-        </button>
-    </form>
-    
-    <div class="trace-steps">
-        <h3>溯源信息包含以下内容：</h3>
-        <div class="step">
-            <div class="step-icon"><i class="fas fa-seedling"></i></div>
-            <div class="step-content">
-                <h4>原料来源</h4>
-                <p>红薯种植基地位置、种植农户信息、种植日期、施肥用药记录</p>
+        <section id="search" class="section">
+            <div class="container">
+                <h2>产品溯源查询</h2>
+                <p>输入产品溯源码或扫描包装上的二维码，即可查询产品从田间到舌尖的全过程信息，让每一口都吃得安心、吃得放心。</p>
+                <p class="example-code">示例溯源码: <strong>XZWY-2025-0001</strong></p>
+                
+                <form id="traceForm">
+                    <label for="productId">产品溯源码:</label>
+                    <input type="text" id="productId" name="productId" placeholder="例如: XZWY-2025-0001" required pattern="[A-Z]{4}-[0-9]{4}-[0-9]{4}">
+                    <button type="submit" id="submitBtn">
+                        <span id="btnText">立即查询</span>
+                        <div class="loader" id="loader"></div>
+                    </button>
+                </form>
+                
+                <div class="trace-steps">
+                    <h3>溯源信息包含以下内容：</h3>
+                    <div class="step">
+                        <div class="step-icon"><i class="fas fa-seedling"></i></div>
+                        <div class="step-content">
+                            <h4>原料来源</h4>
+                            <p>红薯种植基地位置、种植农户信息、种植日期、施肥用药记录</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-icon"><i class="fas fa-industry"></i></div>
+                        <div class="step-content">
+                            <h4>生产加工</h4>
+                            <p>生产车间、加工工艺、关键控制点检测数据、生产日期、操作人员</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-icon"><i class="fas fa-box-open"></i></div>
+                        <div class="step-content">
+                            <h4>包装检验</h4>
+                            <p>包装材料信息、灭菌方式、成品检验报告、包装日期、质检员</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-icon"><i class="fas fa-truck"></i></div>
+                        <div class="step-content">
+                            <h4>物流仓储</h4>
+                            <p>仓储条件、入库日期、出库日期、物流信息、经销商信息</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="result"></div>
             </div>
-        </div>
-        <div class="step">
-            <div class="step-icon"><i class="fas fa-industry"></i></div>
-            <div class="step-content">
-                <h4>生产加工</h4>
-                <p>生产车间、加工工艺、关键控制点检测数据、生产日期、操作人员</p>
-            </div>
-        </div>
-        <div class="step">
-            <div class="step-icon"><i class="fas fa-box-open"></i></div>
-            <div class="step-content">
-                <h4>包装检验</h4>
-                <p>包装材料信息、灭菌方式、成品检验报告、包装日期、质检员</p>
-            </div>
-        </div>
-        <div class="step">
-            <div class="step-icon"><i class="fas fa-truck"></i></div>
-            <div class="step-content">
-                <h4>物流仓储</h4>
-                <p>仓储条件、入库日期、出库日期、物流信息、经销商信息</p>
-            </div>
-        </div>
-    </div>
-    
-    <div id="result"></div>
-</section>
+        </section>
 
         <!-- 关于项目部分 - 使用折叠面板 -->
-        <section id="about">
-            <h2>关于项目</h2>
-            
-            <div class="accordion">
-                <div class="accordion-header active">项目概述 <i class="fas fa-chevron-down"></i></div>
-                <div class="accordion-content active">
-                    <p>"乡珍新味"是以尉氏县永兴镇成熟的红薯产业链为依托，聚焦地瓜秧副产物资源化利用，打造本地化、高品质的特色咸菜产品。项目通过"小作坊起步、标准化升级、全渠道销售"路径，构建"农户+合作社+电商"的利益联结机制，成为永兴镇红薯产业链延伸的特色标杆项目。</p>
+        <section id="about" class="section">
+            <div class="container">
+                <h2>关于项目</h2>
+                
+                <div class="accordion">
+                    <div class="accordion-header active">项目概述 <i class="fas fa-chevron-down"></i></div>
+                    <div class="accordion-content active">
+                        <p>"乡珍新味"是以尉氏县永兴镇成熟的红薯产业链为依托，聚焦地瓜秧副产物资源化利用，打造本地化、高品质的特色咸菜产品。项目通过"小作坊起步、标准化升级、全渠道销售"路径，构建"农户+合作社+电商"的利益联结机制，成为永兴镇红薯产业链延伸的特色标杆项目。</p>
+                    </div>
                 </div>
-            </div>
-            
-            <div class="accordion">
-                <div class="accordion-header">项目背景 <i class="fas fa-chevron-down"></i></div>
-                <div class="accordion-content">
-                    <p>随着乡村振兴战略的深入推进，我国农业发展已从"重产量、轻效益"的传统阶段，转向"挖潜力、提价值"的高质量发展新阶段。"乡珍新味"项目正是响应这一号召，以红薯秧咸菜产业为切入点，既盘活农废资源，又培育富民产业，精准契合乡村振兴对"资源高效用、农民稳增收"的核心要求。</p>
+                
+                <div class="accordion">
+                    <div class="accordion-header">项目背景 <i class="fas fa-chevron-down"></i></div>
+                    <div class="accordion-content">
+                        <p>随着乡村振兴战略的深入推进，我国农业发展已从"重产量、轻效益"的传统阶段，转向"挖潜力、提价值"的高质量发展新阶段。"乡珍新味"项目正是响应这一号召，以红薯秧咸菜产业为切入点，既盘活农废资源，又培育富民产业，精准契合乡村振兴对"资源高效用、农民稳增收"的核心要求。</p>
+                    </div>
                 </div>
-            </div>
-            
-            <div class="accordion">
-                <div class="accordion-header">项目目标 <i class="fas fa-chevron-down"></i></div>
-                <div class="accordion-content">
-                    <p>通过四到五年时间，分三阶段实现从产品落地到产业集群的形成：基础构建期（2026年12月-2027年12月）、规模扩张期（2027年12月-2030年12月）、品牌领航期（2030年12月-）。最终形成年产值超800万元的产业集群，带动周边500亩红薯种植，为500户以上农户提供增收渠道。</p>
+                
+                <div class="accordion">
+                    <div class="accordion-header">项目目标 <i class="fas fa-chevron-down"></i></div>
+                    <div class="accordion-content">
+                        <p>通过四到五年时间，分三阶段实现从产品落地到产业集群的形成：基础构建期（2026年12月-2027年12月）、规模扩张期（2027年12月-2030年12月）、品牌领航期（2030年12月-）。最终形成年产值超800万元的产业集群，带动周边500亩红薯种植，为500户以上农户提供增收渠道。</p>
+                    </div>
                 </div>
             </div>
         </section>
 
         <!-- 产品展示部分 -->
-        <section id="products">
-            <h2>产品展示</h2>
-            <p>我们精心打造多款特色咸菜产品，满足不同消费者的需求：</p>
-            
-            <div class="product-display">
-                <div class="product-card">
-                    <img src="./img/原味红薯梗干.jpg" alt="原味红薯梗干" class="product-image">
-                    <div class="product-info">
-                        <h3>原味红薯梗干</h3>
-                        <p class="product-ad">🌱天然晒场·阳光风味🌱 
-                        <p>🔥健康烘干红薯梗，天然原料零负担，炒炖做法皆美味！</p>
-                        </p>
-                        <p>采用传统工艺低温烘干，保留红薯梗原始风味和营养成分，富含膳食纤维，是健康零食的首选。</p>
-                        <p><strong>规格:</strong> 50g/袋, 100g/袋</p>
-                        <p><strong>食用场景:</strong> 办公室零食/健身代餐/煲汤配料</p>
-                    </div>
-                </div>
+        <section id="products" class="section">
+            <div class="container">
+                <h2>产品展示</h2>
+                <p>我们精心打造多款特色咸菜产品，满足不同消费者的需求：</p>
                 
-                <div class="product-card">
-                    <img src="./img/酸辣红薯梗.jpg" alt="酸辣红薯梗" class="product-image">
-                    <div class="product-info">
-                        <h3>酸辣红薯梗</h3>
-                        <p class="product-ad">🌶️川味发酵·酸辣开胃🌶️  
-                        <p>🔥传统发酵工艺酿，罐装红薯梗酸辣，美味便携享不停！</p> 
-                        💥追剧搭档/下饭神器/野餐必备！</p>
-                        <p>结合四川风味调料，开发出独特酸辣口感，既可作为佐餐小菜，也可直接食用，开胃解腻。</p>
-                        <p><strong>规格:</strong> 200g/罐</p>
-                        <p><strong>食用场景:</strong> 佐餐小菜/即食零食/拌面伴侣</p>
+                <div class="product-display">
+                    <div class="product-card">
+                        <img src="./img/原味红薯梗干.jpg" alt="原味红薯梗干" class="product-image">
+                        <div class="product-info">
+                            <h3>原味红薯梗干</h3>
+                            <p class="product-ad">🌱天然晒场·阳光风味🌱</p>
+                            <p>🔥健康烘干红薯梗，天然原料零负担，炒炖做法皆美味！</p>
+                            <p>采用传统工艺低温烘干，保留红薯梗原始风味和营养成分，富含膳食纤维，是健康零食的首选。</p>
+                            <p><strong>规格:</strong> 50g/袋, 100g/袋</p>
+                            <p><strong>食用场景:</strong> 办公室零食/健身代餐/煲汤配料</p>
+                        </div>
                     </div>
-                </div>
-                
-                <div class="product-card">
-                    <img src="./img/四川风味湿咸菜.png" alt="四川风味湿咸菜" class="product-image">
-                    <div class="product-info">
-                        <h3>四川风味湿咸菜</h3>
-                        <p class="product-ad">🌶️🌿现拌鲜香·川味暴击🌿🌶️  
-                        24小时现拌工艺，脆爽口感MAX  
-                        秘制红油浸泡，越吃越上头  
-                        <p>🍚现拌现吃够新鲜，川香浸润红薯秧，酸辣脆爽越吃越上头！</p>
-                        </p>
-                        <p><strong>规格:</strong> 300g/袋</p>
-                        <p><strong>食用场景:</strong> 粥品伴侣/火锅调料/开胃小菜</p>
+                    
+                    <div class="product-card">
+                        <img src="./img/酸辣红薯梗.jpg" alt="酸辣红薯梗" class="product-image">
+                        <div class="product-info">
+                            <h3>酸辣红薯梗</h3>
+                            <p class="product-ad">🌶️川味发酵·酸辣开胃🌶️</p>
+                            <p>🔥传统发酵工艺酿，罐装红薯梗酸辣，美味便携享不停！</p>
+                            <p>💥追剧搭档/下饭神器/野餐必备！</p>
+                            <p>结合四川风味调料，开发出独特酸辣口感，既可作为佐餐小菜，也可直接食用，开胃解腻。</p>
+                            <p><strong>规格:</strong> 200g/罐</p>
+                            <p><strong>食用场景:</strong> 佐餐小菜/即食零食/拌面伴侣</p>
+                        </div>
                     </div>
-                </div>
-
-                <div class="product-card">
-                    <img src="https://via.placeholder.com/300x200?text=四川风味湿咸菜" alt="四川风味湿咸菜" class="product-image">
-                    <div class="product-info">
-                        <h3>红薯三吃套餐</h3>
-                        <p>与本地早餐店合作推出的特色套餐，包含红薯面馒头、红薯秧咸菜和红薯泥，营养均衡，风味独特。</p>
-                        <p><strong>规格:</strong> 一份套餐</p>
+                    
+                    <div class="product-card">
+                        <img src="./img/四川风味湿咸菜.png" alt="四川风味湿咸菜" class="product-image">
+                        <div class="product-info">
+                            <h3>四川风味湿咸菜</h3>
+                            <p class="product-ad">🌶️🌿现拌鲜香·川味暴击🌿🌶️</p>
+                            <p>24小时现拌工艺，脆爽口感MAX</p>
+                            <p>秘制红油浸泡，越吃越上头</p>
+                            <p>🍚现拌现吃够新鲜，川香浸润红薯秧，酸辣脆爽越吃越上头！</p>
+                            <p><strong>规格:</strong> 300g/袋</p>
+                            <p><strong>食用场景:</strong> 粥品伴侣/火锅调料/开胃小菜</p>
+                        </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- 政策支持部分 - 使用折叠面板 -->
-        <section id="policy">
-            <h2>政策支持</h2>
-            <p>项目得到多项国家及地方政策支持，为项目发展提供有力保障：</p>
-            
-            <div class="accordion">
-                <div class="accordion-header">《乡村全面振兴规划（2024—2027年）》 <i class="fas fa-chevron-down"></i></div>
-                <div class="accordion-content">
-                 <p>鼓励发展"土特产"加工，推动产业链延伸和品牌打造，明确将农业废弃物资源化纳入循环农业体系。本项目将地瓜秧资源化利用与红薯产业链延伸整体规划，完全符合政策导向。</p>
+        <!-- 政策支持部分 - 改为折叠面板 -->
+        <section id="policy" class="section">
+            <div class="container">
+                <h2>政策支持</h2>
+                <p>项目得到多项国家及地方政策支持，为项目发展提供有力保障：</p>
+                
+                <div class="accordion">
+                    <div class="accordion-header">《乡村全面振兴规划（2024—2027年）》 <i class="fas fa-chevron-down"></i></div>
+                    <div class="accordion-content">
+                        <div>
+                            <p>鼓励发展"土特产"加工，推动产业链延伸和品牌打造，明确将农业废弃物资源化纳入循环农业体系。本项目将地瓜秧资源化利用与红薯产业链延伸整体规划，完全符合政策导向。</p>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            
-            <div class="accordion">
-                <div class="accordion-header">《中共中央国务院关于做好2023年全面推进乡村振兴重点工作的意见》 <i class="fas fa-chevron-down"></i></div>
-                <div class="accordion-content">
-                    <p>实施农产品加工业提升行动，支持家庭农场、农民合作社和中小微企业等发展农产品产地初加工，引导大型农业企业发展农产品精深加工。本项目采用"农户+合作社+企业"模式，完美契合政策要求。</p>
+
+                <div class="accordion">
+                    <div class="accordion-header">《中共中央国务院关于做好2023年全面推进乡村振兴重点工作的意见》 <i class="fas fa-chevron-down"></i></div>
+                    <div class="accordion-content">
+                        <div>
+                            <p>实施农产品加工业提升行动，支持家庭农场、农民合作社和中小微企业等发展农产品产地初加工，引导大型农业企业发展农产品精深加工。本项目采用"农户+合作社+企业"模式，完美契合政策要求。</p>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            
-            <div class="accordion">
-                <div class="accordion-header">《河南省乡村富民产业发展行动方案（2025—2027年）》 <i class="fas fa-chevron-down"></i></div>
-                <div class="accordion-content">
-                    <p>鼓励开发功能型食品，建设农产品加工集聚区。本项目咸菜产品可纳入特色农产品加工范畴，申请集聚区基础设施补贴，享受政策红利。</p>
+
+                <div class="accordion">
+                    <div class="accordion-header">《河南省乡村富民产业发展行动方案（2025—2027年）》 <i class="fas fa-chevron-down"></i></div>
+                    <div class="accordion-content">
+                        <div>
+                            <p>鼓励开发功能型食品，建设农产品加工集聚区。本项目咸菜产品可纳入特色农产品加工范畴，申请集聚区基础设施补贴，享受政策红利。</p>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            
-            <div class="accordion">
-                <div class="accordion-header">《开封市乡村振兴战略规划（2024—2027年）》 <i class="fas fa-chevron-down"></i></div>
-                <div class="accordion-content">
-                    <p>提出建设农业强市，支持县域特色产业集群发展，推动"一县一业"。本项目直接指导尉氏县红薯产业链延伸，助力地方特色产业发展。</p>
+
+                <div class="accordion">
+                    <div class="accordion-header">《开封市乡村振兴战略规划（2024—2027年）》 <i class="fas fa-chevron-down"></i></div>
+                    <div class="accordion-content">
+                        <div>
+                            <p>提出建设农业强市，支持县域特色产业集群发展，推动"一县一业"。本项目直接指导尉氏县红薯产业链延伸，助力地方特色产业发展。</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
 
         <!-- 技术保障部分 -->
-        <section id="technology">
-            <h2>技术保障</h2>
-            <p>我们采用先进的技术手段，确保产品质量安全，实现生产全程可追溯：</p>
-            
-            <div class="tech-保障">
-                <div class="tech-card">
-                    <h3>全链条数字化安全管控体系</h3>
-                    <p>构建从田间到舌尖的全链条数字化安全管控体系，包括源头可控化、生产标准化、溯源可视化三个核心环节，确保每一包"乡珍新味"咸菜都品质稳定、安全可靠。</p>
-                </div>
+        <section id="technology" class="section">
+            <div class="container">
+                <h2>技术保障</h2>
+                <p>我们采用先进的技术手段，确保产品质量安全，实现生产全程可追溯：</p>
                 
-                <div class="tech-card">
-                    <h3>HACCP危害分析与关键控制点体系</h3>
-                    <p>全面引入国际通行的HACCP体系，对生产流程中的关键环节进行精准布控，包括漂烫工序的温度时间控制、添加剂管理、包装杀菌等，确保产品安全。</p>
-                </div>
-                
-                <div class="tech-card">
-                    <h3>网站溯源系统</h3>
-                    <p>为每一件产品赋予独一无二的溯源码身份证，消费者只需按溯源码输入，即可通过网页追溯产品的原料来源、生产日期、工艺参数、检测结果等全部信息，实现消费透明。</p>
-                </div>
-                
-                <div class="tech-card">
-                    <h3>第三方权威检测</h3>
-                    <p>每年至少两次将成品送至具备CMA认证资质的第三方权威检测机构进行全项检测，检测报告在企业官网和微信公众号公示，并在通过检测的产品包装上明确标注"第三方权威检测合格"字样。</p>
+                <div class="tech-保障">
+                    <div class="tech-card">
+                        <h3>全链条数字化安全管控体系</h3>
+                        <p>构建从田间到舌尖的全链条数字化安全管控体系，包括源头可控化、生产标准化、溯源可视化三个核心环节，确保每一包"乡珍新味"咸菜都品质稳定、安全可靠。</p>
+                    </div>
+                    
+                    <div class="tech-card">
+                        <h3>HACCP危害分析与关键控制点体系</h3>
+                        <p>全面引入国际通行的HACCP体系，对生产流程中的关键环节进行精准布控，包括漂烫工序的温度时间控制、添加剂管理、包装杀菌等，确保产品安全。</p>
+                    </div>
+                    
+                    <div class="tech-card">
+                        <h3>网站溯源系统</h3>
+                        <p>为每一件产品赋予独一无二的溯源码身份证，消费者只需按溯源码输入，即可通过网页追溯产品的原料来源、生产日期、工艺参数、检测结果等全部信息，实现消费透明。</p>
+                    </div>
+
+                    <div class="tech-card">
+                        <h3>第三方权威检测</h3>
+                        <p>每年至少两次将成品送至具备CMA认证资质的第三方权威检测机构进行全项检测，检测报告在企业官网和微信公众号公示，并在通过检测的产品包装上明确标注"第三方权威检测合格"字样。</p>
+                    </div>
+
                 </div>
             </div>
         </section>
-
-        <!-- 团队介绍部分 -->
-        <section id="team">
-            <h2>团队介绍</h2>
-            <p>我们的团队由跨学科人才组成，具备丰富的专业知识和实践经验：</p>
-            
-
-            <!-- 价值观展示 -->
-    <div class="benefit" style="margin-bottom: 2rem; background-color: #f0f7ff; border-left: 4px solid var(--primary-color);">
-        <h3>我们的价值观</h3>
-        <div class="feature" style="margin-bottom: 0.5rem;">
-            <div class="feature-icon"><i class="fas fa-seedling"></i></div>
-            <p><strong>品质为根：</strong>坚守天然原料，传承发酵匠心，严控每一口健康风味</p>
+        
+<!-- 团队介绍部分 -->
+<section id="team" class="section">
+    <div class="container">
+        <h2>团队介绍</h2>
+        <p>我们的团队由跨学科人才组成，具备丰富的专业知识和实践经验：</p>
+        
+        <!-- 价值观展示 -->
+        <div class="benefit" style="margin-bottom: 2rem; background-color: #f0f7ff; border-left: 4px solid #ffd700;">
+            <h3>我们的价值观</h3>
+            <div class="feature" style="margin-bottom: 0.5rem;">
+                <div class="feature-icon"><i class="fas fa-seedling"></i></div>
+                <p><strong>品质为根：</strong>坚守天然原料，传承发酵匠心，严控每一口健康风味</p>
+            </div>
+            <div class="feature" style="margin-bottom: 0.5rem;">
+                <div class="feature-icon"><i class="fas fa-home"></i></div>
+                <p><strong>乡村为魂：</strong>深耕尉氏乡土，赋能农户增收，助力乡村产业振兴</p>
+            </div>
+            <div class="feature" style="margin-bottom: 0.5rem;">
+                <div class="feature-icon"><i class="fas fa-lightbulb"></i></div>
+                <p><strong>创新为翼：</strong>迭代传统工艺，适配市场需求，让乡村美味走向全国</p>
+            </div>
+            <div class="feature">
+                <div class="feature-icon"><i class="fas fa-handshake"></i></div>
+                <p><strong>诚信为本：</strong>坦诚对待伙伴，真诚服务用户，坚守食品行业初心</p>
+            </div>
         </div>
-        <div class="feature" style="margin-bottom: 0.5rem;">
-            <div class="feature-icon"><i class="fas fa-home"></i></div>
-            <p><strong>乡村为魂：</strong>深耕尉氏乡土，赋能农户增收，助力乡村产业振兴</p>
-        </div>
-        <div class="feature" style="margin-bottom: 0.5rem;">
-            <div class="feature-icon"><i class="fas fa-lightbulb"></i></div>
-            <p><strong>创新为翼：</strong>迭代传统工艺，适配市场需求，让乡村美味走向全国</p>
-        </div>
-        <div class="feature">
-            <div class="feature-icon"><i class="fas fa-handshake"></i></div>
-            <p><strong>诚信为本：</strong>坦诚对待伙伴，真诚服务用户，坚守食品行业初心</p>
-        </div>
-    </div>
-
+        
+        <div class="team-grid">
             <div class="team-member">
-                
                 <div class="team-member-info">
                     <h3>程多佳 - 项目负责人</h3>
                     <p><strong>专业:</strong> 思想政治教育</p>
@@ -873,7 +1028,6 @@
             </div>
             
             <div class="team-member">
-                
                 <div class="team-member-info">
                     <h3>张诗佳 - 产品研发</h3>
                     <p><strong>专业:</strong> 软件工程</p>
@@ -883,7 +1037,6 @@
             </div>
             
             <div class="team-member">
-                
                 <div class="team-member-info">
                     <h3>孙钰莲 - 市场运营</h3>
                     <p><strong>专业:</strong> 会计</p>
@@ -893,15 +1046,14 @@
             </div>
             
             <div class="team-member">
-                
                 <div class="team-member-info">
                     <h3>王敏 - 财务与法务</h3>
                     <p><strong>专业:</strong> 思想政治教育</p>
                     <p><strong>经验:</strong> 2年大学生创新创业竞赛经验，深度参与科研项目。</p>
-                    <p><strong>职责:</strong> 负责财务管理、法务合规和风险控制。</p>
+                    <p><strong>职责:</strong> 负责品牌推广、市场开拓和客户关系维护。</p>
                 </div>
             </div>
-            
+
             <div class="team-member">
                 <div class="team-member-info">
                     <h3>石雅慧 - 产品形象设计</h3>
@@ -910,117 +1062,187 @@
                     <p><strong>职责:</strong> 负责产品包装设计和品牌视觉形象打造。</p>
                 </div>
             </div>
+
+            <div class="team-member">
+                <div class="team-member-info">
+                    <h3>曹宇欣 - 人力资源管理</h3>
+                    <p><strong>专业:</strong> 马克思主义学院思想政治教育</p>
+                    <p><strong>经验:</strong> 1年大学生职业生涯规划竞赛经验（曾获成长赛道院级二等奖），现担任马克思主义学院院学生会学习生活部副部长与河南大学当代中国马克思主义研究会学研部部长。</p>
+                    <p><strong>职责:</strong> 统筹团队人力资源规划，负责人员协调与管理工作。</p>
+                </div>
+            </div>
+
+            <div class="team-member">
+                <div class="team-member-info">
+                    <h3>王浩然 - 物流管理</h3>
+                    <p><strong>专业:</strong> 马克思主义学院思想政治教育</p>
+                    <p><strong>经验:</strong> 两年参与大学生创新创业经验，两次暑期“三下乡”社会实践经历，现任河南大学当代中国马克思主义研究会会长。</p>
+                    <p><strong>职责:</strong> 负责物流策略规划、资源整合及团队协作机制建立。</p>
+                </div>
+            </div>
+
+            <div class="team-member">
+                <div class="team-member-info">
+                    <h3>肖伊雯 - 产品安全管理</h3>
+                    <p><strong>专业:</strong> 药学院中药专业</p>
+                    <p><strong>经验:</strong> 1年大学生挑战杯系列竞赛经验（曾获挑战杯校级三等奖），参与药学开放性课题项目，现担任中药班班长与学院主持队队长。</p>
+                    <p><strong>职责:</strong> 负责农产品全环节安全管理，收集整理安全数据。</p>
+                </div>
+            </div>
+
+            <div class="team-member">
+                <div class="team-member-info">
+                    <h3>高峰娟 - 售后服务与顾客维护</h3>
+                    <p><strong>专业:</strong> 马克思主义学院思想政治教育</p>
+                    <p><strong>经验:</strong> 参与"挑战杯"全国大学生课外学术科技作品竞赛，有暑期乡村振兴项目参与经历。</p>
+                    <p><strong>职责:</strong> 负责客户关系维护、需求调研及售后服务优化。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+        <!-- 财务分析部分 - 添加统一宽度容器 -->
+        <section id="finance" class="section">
+            <div class="container">
+                <h2>财务分析</h2>
+                <p>项目财务规划科学合理，确保稳健运营和可持续发展，资金来源聚焦乡村产业适配性融资渠道，结合"小作坊起步、标准化升级"的阶段性特点精准配置资金：</p>
+                
+                <div class="content-container">
+                    <h3>资金来源与运用</h3>
+                    <ul>
+                        <li><strong>政府涉农专项补贴:</strong> 重点申请"农产品产地初加工补贴"，适配中期标准化升级需求。</li>
+                        <li><strong>合作社联合自筹:</strong> 由红薯种植合作社与本地粉条企业共同出资，绑定产业链核心资源。</li>
+                        <li><strong>农户小额入股:</strong> 支持种植户以1000元现金或地瓜秧折抵入股，增强利益联结。</li>
+                        <li><strong>银行贷款:</strong> 对接本地农商行"三农创业贷"，贷款30万元，期限3年，匹配项目升级周期。</li>
+                    </ul>
+                    
+                    <h3>成本与收入核算（前三年预估）</h3>
+                    <table class="financial-table">
+                        <thead>
+                            <tr>
+                                <th>类别</th>
+                                <th>第1年（小作坊期）</th>
+                                <th>第2年（标准化初期）</th>
+                                <th>第3年（标准化成熟期）</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>成本合计</td>
+                                <td>98万元</td>
+                                <td>180万元</td>
+                                <td>260万元</td>
+                            </tr>
+                            <tr>
+                                <td>固定成本</td>
+                                <td>42万元</td>
+                                <td>60万元</td>
+                                <td>70万元</td>
+                            </tr>
+                            <tr>
+                                <td>变动成本</td>
+                                <td>56万元</td>
+                                <td>120万元</td>
+                                <td>190万元</td>
+                            </tr>
+                            <tr>
+                                <td>收入合计</td>
+                                <td>140万元</td>
+                                <td>300万元</td>
+                                <td>480万元</td>
+                            </tr>
+                            <tr>
+                                <td>毛利</td>
+                                <td>42万元</td>
+                                <td>120万元</td>
+                                <td>220万元</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                    <h3>关键财务指标</h3>
+                    <ul>
+                        <li><strong>投资回收期:</strong> 预估2年，较农产品加工行业平均周期缩短1-2年。</li>
+                        <li><strong>毛利率:</strong> 第1年30%，第2年40%，第3年42%，逐年提升。</li>
+                        <li><strong>资产负债率:</strong> 第1年30%，第2年18%，第3年10%，偿债能力充足。</li>
+                        <li><strong>存货周转率:</strong> 第1年5次，第2年7次，第3年9次，资金占用成本低。</li>
+                    </ul>
+                </div>
+            </div>
         </section>
 
-        <!-- 财务分析部分 -->
-        <section id="finance">
-            <h2>财务分析</h2>
-            <p>项目财务规划科学合理，确保稳健运营和可持续发展：</p>
-            
-            <h3>资金来源与运用</h3>
-            <p>项目资金来源聚焦乡村产业适配性融资渠道，结合"小作坊起步、标准化升级"的阶段性特点精准配置资金：</p>
-            <ul>
-                <li><strong>政府涉农专项补贴:</strong> 重点申请"农产品产地初加工补贴"，适配中期标准化升级需求。</li>
-                <li><strong>合作社联合自筹:</strong> 由红薯种植合作社与本地粉条企业共同出资，绑定产业链核心资源。</li>
-                <li><strong>农户小额入股:</strong> 支持种植户以1000元现金或地瓜秧折抵入股，增强利益联结。</li>
-                <li><strong>银行贷款:</strong> 对接本地农商行"三农创业贷"，贷款30万元，期限3年，匹配项目升级周期。</li>
-            </ul>
-            
-            <h3>成本与收入核算（前三年预估）</h3>
-            <table class="financial-table">
-                <thead>
-                    <tr>
-                        <th>类别</th>
-                        <th>第1年（小作坊期）</th>
-                        <th>第2年（标准化初期）</th>
-                        <th>第3年（标准化成熟期）</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>成本合计</td>
-                        <td>98万元</td>
-                        <td>180万元</td>
-                        <td>260万元</td>
-                    </tr>
-                    <tr>
-                        <td>固定成本</td>
-                        <td>42万元</td>
-                        <td>60万元</td>
-                        <td>70万元</td>
-                    </tr>
-                    <tr>
-                        <td>变动成本</td>
-                        <td>56万元</td>
-                        <td>120万元</td>
-                        <td>190万元</td>
-                    </tr>
-                    <tr>
-                        <td>收入合计</td>
-                        <td>140万元</td>
-                        <td>300万元</td>
-                        <td>480万元</td>
-                    </tr>
-                    <tr>
-                        <td>毛利</td>
-                        <td>42万元</td>
-                        <td>120万元</td>
-                        <td>220万元</td>
-                    </tr>
-                </tbody>
-            </table>
-            
-            <h3>关键财务指标</h3>
-            <ul>
-                <li><strong>投资回收期:</strong> 预估2年，较农产品加工行业平均周期缩短1-2年。</li>
-                <li><strong>毛利率:</strong> 第1年30%，第2年40%，第3年42%，逐年提升。</li>
-                <li><strong>资产负债率:</strong> 第1年30%，第2年18%，第3年10%，偿债能力充足。</li>
-                <li><strong>存货周转率:</strong> 第1年5次，第2年7次，第3年9次，资金占用成本低。</li>
-            </ul>
-        </section>
-
-        <!-- 社会效益部分 -->
-        <section id="benefits">
-            <h2>社会效益</h2>
-            <p>项目深度契合乡村振兴战略要求，从经济、社会、生态三大维度释放多重效益：</p>
-            
-            <div class="benefit">
-                <h3>赋能乡村产业振兴</h3>
-                <p>项目打破永兴镇红薯产业"重粉条、轻副产"的单一格局，将地瓜秧从"废弃物"转化为"增值品"，构建"红薯种植-粉条加工-地瓜秧咸菜-配套销售"的全产业链闭环。一方面延伸了红薯产业的价值链条，直接提升了产业附加值；另一方面，通过"合作社+农户"的模式，整合分散的红薯种植资源，推动种植、加工环节的标准化升级，为永兴镇打造"红薯特色产业集群"奠定基础。</p>
-            </div>
-            
-            <div class="benefit">
-                <h3>带动本地就业增收</h3>
-                <p>项目为本地居民提供了多元化的就业岗位，有效破解农村"剩余劳动力就业难"问题。生产端常年需要固定工人150人（涵盖清洗、腌制、包装、质检等岗位），旺季（红薯收获期9-11月）需临时用工400人，主要吸纳本村及周边村庄的留守妇女、中老年劳动力，人均月收入可达2000元；种植端通过与合作社合作，带动1000余户红薯种植户稳定增收，不仅地瓜秧有了固定收购渠道，合作社还会为农户提供统一的种植技术指导，提升红薯产量和品质，间接增加农户的粉条加工收益；创业端项目发展成熟后，将培育一批本地电商运营、品牌推广、渠道销售人才，带动农户开展咸菜零售、电商分销等创业活动，形成"一户带动一片"的致富效应。</p>
-            </div>
-            
-            <div class="benefit">
-                <h3>推动资源循环利用</h3>
-                <p>以往永兴镇红薯加工产生的地瓜秧多被随意丢弃或简单还田，不仅造成资源浪费，还可能因腐烂产生环境污染。项目通过规模化回收地瓜秧用于咸菜生产，减少农业废弃物的排放。同时，生产过程中产生的少量咸菜腌制废水，将通过"沉淀过滤+生物处理"的方式实现达标排放，部分处理后的水可用于灌溉农田，实现水资源的循环利用；腌制残渣经过发酵处理后可作为有机肥料还田，形成"农业生产-加工-废弃物资源化"的生态循环模式。这种"变废为宝"的资源利用方式，为农村农业废弃物的资源化处理提供了可复制的"永兴模式"，助力打造"绿色低碳、循环发展"的乡村生态环境。</p>
-            </div>
-            
-            <div class="benefit">
-                <h3>推动乡村文化建设</h3>
-                <p>项目通过挖掘地瓜秧咸菜的民俗文化内涵，将其与开封地区的饮食文化相结合，开发"红薯三吃"早餐系列——红薯面馒头+红薯秧咸菜+红薯泥等产品，成为承载乡村文化的"特色伴手礼"，助力乡村文化的传播与传承。同时，项目的成功运营将增强本地居民对乡村特色产业的认同感和自豪感，激发更多人参与乡村产业发展、传承乡村文化的积极性，为乡村文化振兴注入内生动力。</p>
-            </div>
-            
-            <div class="benefit">
-                <h3>提升乡村治理效能</h3>
-                <p>项目构建的"农户+合作社+电商"利益联结机制，不仅是经济合作模式，更促进了乡村治理的优化。合作社作为纽带，将分散的农户组织起来，在生产标准制定、利益分配、风险共担等方面发挥协调作用，增强了村民的集体意识和合作精神；项目运营过程中，需要与村两委、乡镇政府、市场监管等部门密切配合，推动了"政府引导、市场主导、村民参与"的乡村治理模式落地；此外，项目带动的就业增收减少了农村闲置人员引发的矛盾，提升了村民的生活幸福感和满意度，为建设"产业兴旺、生态宜居、乡风文明、治理有效、生活富裕"的和美乡村提供了有力支撑。</p>
+        <!-- 社会效益部分 - 添加统一宽度容器 -->
+        <section id="benefits" class="section">
+            <div class="container">
+                <h2>社会效益</h2>
+                <p>项目深度契合乡村振兴战略要求，从经济、社会、生态三大维度释放多重效益：</p>
+                
+                <div class="content-container">
+                    <div class="benefit">
+                        <h3>赋能乡村产业振兴</h3>
+                        <p>项目打破永兴镇红薯产业"重粉条、轻副产"的单一格局，将地瓜秧从"废弃物"转化为"增值品"，构建"红薯种植-粉条加工-地瓜秧咸菜-配套销售"的全产业链闭环。一方面延伸了红薯产业的价值链条，直接提升了产业附加值；另一方面，通过"合作社+农户"的模式，整合分散的红薯种植资源，推动种植、加工环节的标准化升级，为永兴镇打造"红薯特色产业集群"奠定基础。</p>
+                    </div>
+                    
+                    <div class="benefit">
+                        <h3>带动本地就业增收</h3>
+                        <p>项目为本地居民提供了多元化的就业岗位，有效破解农村"剩余劳动力就业难"问题。生产端常年需要固定工人150人（涵盖清洗、腌制、包装、质检等岗位），旺季（红薯收获期9-11月）需临时用工400人，主要吸纳本村及周边村庄的留守妇女、中老年劳动力，人均月收入可达2000元；种植端通过与合作社合作，带动1000余户红薯种植户稳定增收，不仅地瓜秧有了固定收购渠道，合作社还会为农户提供统一的种植技术指导，提升红薯产量和品质，间接增加农户的粉条加工收益；创业端项目发展成熟后，将培育一批本地电商运营、品牌推广、渠道销售人才，带动农户开展咸菜零售、电商分销等创业活动，形成"一户带动一片"的致富效应。</p>
+                    </div>
+                    
+                    <div class="benefit">
+                        <h3>推动资源循环利用</h3>
+                        <p>以往永兴镇红薯加工产生的地瓜秧多被随意丢弃或简单还田，不仅造成资源浪费，还可能因腐烂产生环境污染。项目通过规模化回收地瓜秧用于咸菜生产，减少农业废弃物的排放。同时，生产过程中产生的少量咸菜腌制废水，将通过"沉淀过滤+生物处理"的方式实现达标排放，部分处理后的水可用于灌溉农田，实现水资源的循环利用；腌制残渣经过发酵处理后可作为有机肥料还田，形成"农业生产-加工-废弃物资源化"的生态循环模式。这种"变废为宝"的资源利用方式，为农村农业废弃物的资源化处理提供了可复制的"永兴模式"，助力打造"绿色低碳、循环发展"的乡村生态环境。</p>
+                    </div>
+                    
+                    <div class="benefit">
+                        <h3>推动乡村文化建设</h3>
+                        <p>项目通过挖掘地瓜秧咸菜的民俗文化内涵，将其与开封地区的饮食文化相结合，开发"红薯三吃"早餐系列——红薯面馒头+红薯秧咸菜+红薯泥等产品，成为承载乡村文化的"特色伴手礼"，助力乡村文化的传播与传承。同时，项目的成功运营将增强本地居民对乡村特色产业的认同感和自豪感，激发更多人参与乡村产业发展、传承乡村文化的积极性，为乡村文化振兴注入内生动力。</p>
+                    </div>
+                    
+                    <div class="benefit">
+                        <h3>提升乡村治理效能</h3>
+                        <p>项目构建的"农户+合作社+电商"利益联结机制，不仅是经济合作模式，更促进了乡村治理的优化。合作社作为纽带，将分散的农户组织起来，在生产标准制定、利益分配、风险共担等方面发挥协调作用，增强了村民的集体意识和合作精神；项目运营过程中，需要与村两委、乡镇政府、市场监管等部门密切配合，推动了"政府引导、市场主导、村民参与"的乡村治理模式落地；此外，项目带动的就业增收减少了农村闲置人员引发的矛盾，提升了村民的生活幸福感和满意度，为建设"产业兴旺、生态宜居、乡风文明、治理有效、生活富裕"的和美乡村提供了有力支撑。</p>
+                    </div>
+                </div>
             </div>
         </section>
 
-        <!-- 联系我们部分 -->
-        <section id="contact">
-            <h2>联系我们</h2>
-            <p>如果您对我们的项目感兴趣或有任何疑问，欢迎通过以下方式联系我们：</p>
-            <ul>
-                <li><strong>电话:</strong> 123-4567-8901</li>
-                <li><strong>邮箱:</strong> info@xiangzhenxinwei.com</li>
-                <li><strong>网址:</strong> https://zhangshijia310148.github.io/</li>
-                <li><strong>地址:</strong> 河南省尉氏县永兴镇红薯产业园区</li>
-            </ul>
-            
+        <!-- 联系我们部分 - 添加统一宽度容器 -->
+        <section id="contact" class="section">
+            <div class="container">
+                <h2>联系我们</h2>
+                <p>如果您对我们的项目感兴趣或有任何疑问，欢迎通过以下方式联系我们：</p>
+                
+                <div class="content-container" style="background: white; border-radius: 10px; padding: 30px; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1); text-align: left; margin-top: 20px;">
+                    <ul style="list-style-type: none; padding-left: 0;">
+                        <li style="margin-bottom: 15px; display: flex; align-items: center;">
+                            <i class="fas fa-phone-alt" style="color: var(--secondary-color); margin-right: 15px; width: 20px;"></i>
+                            <strong>电话:</strong> 123-4567-8901
+                        </li>
+                        <li style="margin-bottom: 15px; display: flex; align-items: center;">
+                            <i class="fas fa-envelope" style="color: var(--secondary-color); margin-right: 15px; width: 20px;"></i>
+                            <strong>邮箱:</strong> info@xiangzhenxinwei.com
+                        </li>
+                        <li style="margin-bottom: 15px; display: flex; align-items: center;">
+                            <i class="fas fa-globe" style="color: var(--secondary-color); margin-right: 15px; width: 20px;"></i>
+                            <strong>网址:</strong> https://zhangshijia310148.github.io/
+                        </li>
+                        <li style="margin-bottom: 15px; display: flex; align-items: center;">
+                            <i class="fas fa-map-marker-alt" style="color: var(--secondary-color); margin-right: 15px; width: 20px;"></i>
+                            <strong>地址:</strong> 河南省尉氏县永兴镇红薯产业园区
+                        </li>
+                    </ul>
+                    
+                    <div style="margin-top: 30px;">
+                        <h3 style="margin-bottom: 15px; color: var(--dark-color);">关注我们</h3>
+                        <div style="display: flex; gap: 20px; font-size: 1.5em;">
+                            <a href="#" style="color: var(--secondary-color); transition: color 0.3s;"><i class="fab fa-weixin"></i></a>
+                            <a href="#" style="color: var(--secondary-color); transition: color 0.3s;"><i class="fab fa-weibo"></i></a>
+                            <a href="#" style="color: var(--secondary-color); transition: color 0.3s;"><i class="fab fa-qq"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </section>
     </main>
 
@@ -1258,4 +1480,4 @@
     </script>
 </body>
 
-</html>   
+</html>
